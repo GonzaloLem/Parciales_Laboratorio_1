@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "Vivienda.h"
-#include "Validaciones.h"
+#include "utn_Validaciones.h"
 
 #define LIMITE_BUFFER 4096
 
@@ -131,9 +131,9 @@ int verificarVivienda(eTipoVivienda* tipoVivienda, int limiteVivienda, int opcio
  *
  * @param id Punterp* int
  * @param contador Puntero del puntero tipo int
- * @return retorna (-1) [Si los punteros llegaron en NULL] - retorna (0) si TodoOk
+ * @return retorna (-1) [Si alguno de los punteros llego en NULL] - retorna (0) si TodoOk
  */
-int asignarId(int* id , int** contador)
+int asignarId(int* id , int* contador)
 {
 	int retorno = -1;
 
@@ -142,85 +142,18 @@ int asignarId(int* id , int** contador)
 
 			retorno = 0;
 
-			(**contador)++;
+			(*contador)++;
 
-			(*id) = (**contador);
-
-		}
-
-	return retorno;
-}
-
-/**
- * @brief imprime los datos de la estructura eCensista
- *
- * @param censista Puntero* de eCensista
- * @param limite int
- * @return retorna (-1) [Si los punteros llegaron en NULL] - retorno (0) si todoOk
- */
-int imprimirCensista(eCensista* censista, int limite)
-{
-	int retorno = -1;
-	int i;
-
-		if(censista != NULL && limite > 0)
-		{
-
-			retorno = 0;
-			printf("Legajo Nombre  Edad    Telefono\n");
-			for(i=0;i<limite;i++)
-			{
-				printf("%d\t"
-						"%s\t"
-						"%d\t"
-						"%s\n",
-						(censista+i)->legajoCensista,
-						(censista+i)->nombre,
-						(censista+i)->edad,
-						(censista+i)->telefono );
-			}
-		}
-
-	return retorno;
-}
-
-/**
- * @brief verifica si el nombre ingresado coincide con el de algun censista
- *
- * @param censista Puntero* a eCensista
- * @param limite int
- * @param nombre Puntero* char
- * @return retorna (-1) [Si los punteros llegaron en NULL] - retorna (-2) [Si no se encontro el censista] -  retorna [el legajo del censista] si todoOk
- */
-int verificarCensista(eCensista* censista, int limite, char* nombre)
-{
-	int retorno = -1;
-	int i;
-	int comparacion;
-
-		if(censista != NULL && limite > 0 && nombre != NULL)
-		{
-			retorno = -2;
-
-			strlwr(nombre);
-
-				for(i=0;i<limite;i++)
-				{
-					strlwr((censista+i)->nombre);
-
-					comparacion = strcmp( (censista+i)->nombre, nombre);
-
-					if(comparacion == 0)
-					{
-						retorno = (censista+i)->legajoCensista;
-						break;
-					}
-				}
+			(*id) = (*contador);
 
 		}
 
 	return retorno;
 }
+
+
+
+
 
 /**
  * @brief Da de alta a una vivienda
@@ -232,9 +165,9 @@ int verificarCensista(eCensista* censista, int limite, char* nombre)
  * @param censista Puntero* de eCensista
  * @param limiteCensista int
  * @param contador Puntero* int id de la vivienda
- * @return retorna (-1) [Si los punteros llegaron en NULL] - retorna (1) [Si los datos no se cargaron] - retorna (0) si todoOk
+ * @return retorna (-1) [Si alguno de los punteros llego en NULL] - retorna (1) [Si los datos no se cargaron] - retorna (0) si todoOk
  */
-int altaVivienda(eVivienda* vivienda, int limiteVivienda, eTipoVivienda* tipoVivienda, int limiteTipoVivienda, eCensista* censista, int limiteCensista, int* contador)
+int altaVivienda(eVivienda* vivienda, int indice, eTipoVivienda* tipoVivienda, int limiteTipoVivienda)
 {
 	int retorno = -1;
 	int retornoCalle;
@@ -244,13 +177,10 @@ int altaVivienda(eVivienda* vivienda, int limiteVivienda, eTipoVivienda* tipoViv
 	int retornoVerificarVivienda;
 
 	int opcionVivienda;
-	int indice;
-	int legajoDelCensista;
-	char buffer[LIMITE_CARACTER];
 
 	eVivienda aux;
 
-		if(vivienda != NULL && limiteVivienda > 0 && tipoVivienda != NULL && limiteTipoVivienda > 0)
+		if(vivienda != NULL && indice >= 0 && tipoVivienda != NULL && limiteTipoVivienda > 0)
 		{
 			retorno = 1;
 
@@ -261,22 +191,12 @@ int altaVivienda(eVivienda* vivienda, int limiteVivienda, eTipoVivienda* tipoViv
 			retornoVivienda = pedirNumeroEntero(&opcionVivienda, "Ingrese el tipo de vivienda\n1)Casa\n2)Departamento\n3)Casilla\n4)Rancho\n-Opcion: ", "Error. ingrese lo que se le pide.\n", 1, 4, 2);
 			retornoVerificarVivienda = verificarVivienda(tipoVivienda, limiteTipoVivienda, opcionVivienda, &aux.tipoVivienda);
 
-			imprimirCensista(censista, limiteCensista);
-			pedirNombreOapellido(buffer, LIMITE_CARACTER, "Ingrese el nombre del Censista: ", "Error. Ingrese bien los datos.\n", 2);
-			legajoDelCensista = verificarCensista(censista, limiteCensista, buffer);
-
-
-				if(retornoCalle == 0 && retornoPersonas == 0 && retornoHabitaciones == 0 && retornoVivienda == 0 && retornoVerificarVivienda == 0 && legajoDelCensista != -1 && legajoDelCensista != -2)
+				if(retornoCalle == 0 && retornoPersonas == 0 && retornoHabitaciones == 0 && retornoVivienda == 0 && retornoVerificarVivienda == 0 /*&& legajoDelCensista != -1 && legajoDelCensista != -2*/)
 				{
-					indice = buscarLibre(vivienda, limiteVivienda);
-					asignarId(&aux.idVivienda, &contador);
-
 						if(indice != -1 && indice != -2)
 						{
 							retorno = 0;
 
-							aux.isEmpty = 0;
-							aux.legajoCensista = legajoDelCensista;
 							(*(vivienda+indice)) = aux;
 						}
 				}
@@ -296,7 +216,7 @@ int altaVivienda(eVivienda* vivienda, int limiteVivienda, eTipoVivienda* tipoViv
  * @param idTipoVivienda int
  * @param tipoVivienda Puntero* de eTipoVivienda
  * @param limite int
- * @return retorna (-1) [Si los punteros llegaron en NULL] - retorna (-2) [Si no se encontro el ID] - retorna (la posicion de la ID) si todoOk
+ * @return retorna (-1) [Si el puntero llego en NULL] - retorna (-2) [Si no se encontro el ID] - retorna (la posicion de la ID) si todoOk
  */
 int buscarTipoVivienda(int idTipoVivienda, eTipoVivienda* tipoVivienda, int limite)
 {
@@ -320,31 +240,33 @@ int buscarTipoVivienda(int idTipoVivienda, eTipoVivienda* tipoVivienda, int limi
 	return retorno;
 }
 
+
+
 /**
- * @brief Busca por un legajo que se le pasa si coincide con alguno de los censista
+ * @brief imprime una vivienda que se le pase
  *
- * @param legajo int
- * @param censista Puntero* de eCenssita
- * @param limite int
- * @return retorna (-1) [Si los punteros llegaron en NULL] - retorna (-2) [Si no se encontro el legajo del Censista] - retorna (La posicion del legajo) si TodoOk
+ * @param vivienda Puntero* de eVivienda
+ * @param tipoVivienda Puntero* de eTipoVivienda
+ * @return retorna (-1) [Si alguno de los punteros llego en NULL] - retorna (0) si todoOk
  */
-int buscarCensista(int legajo, eCensista* censista, int limite)
+int imprimirVivienda(eVivienda* vivienda, eTipoVivienda* tipoVivienda)
 {
 	int retorno = -1;
-	int i;
 
-		if(legajo > 0 && censista != NULL && limite > 0)
+		if(vivienda != NULL && tipoVivienda != NULL )
 		{
-			retorno = -2;
+			retorno = 0;
 
-				for(i=0;i<limite;i++)
-				{
-					if(legajo == (censista+i)->legajoCensista )
-					{
-						retorno = i;
-						break;
-					}
-				}
+			printf("%d  "
+					"\t%s"
+					"      \t%d"
+					" \t%d"
+					"           %s\n",
+			(vivienda)->idVivienda,
+			(vivienda)->calle,
+			(vivienda)->cantidadPersonas,
+			(vivienda)->cantidadHabitaciones,
+			(tipoVivienda)->descripcion );
 
 		}
 
@@ -352,49 +274,33 @@ int buscarCensista(int legajo, eCensista* censista, int limite)
 }
 
 /**
- * @brief	imprime la estructura de eVivienda
+ * @brief Recibe un array de eVivienda y lo manda a imprimir
  *
- * @param vivienda Puntero* de eVivvienda
+ * @param vivienda Puntero* eVivienda
  * @param limiteVivienda int
- * @param tipoVivienda Puntero* de eTipoVivienda
+ * @param tipoVivienda Puntero* eTipoVivienda
  * @param limiteTipoVivienda int
- * @param censista Puntero* de eCensista
- * @param limiteCensista int
- * @return retorna (-1) [Si los punteros llegaron en NULL] - retorna (0) si todoOk
+ * @return retorna (-1) [Si alguno de los punteros llego en NULL] - retorna (0) si todoOk
  */
-int imprimirVivienda(eVivienda* vivienda, int limiteVivienda, eTipoVivienda* tipoVivienda, int limiteTipoVivienda, eCensista* censista, int limiteCensista)
+int imprimirArrayVivienda(eVivienda* vivienda, int limiteVivienda, eTipoVivienda* tipoVivienda, int limiteTipoVivienda)
 {
 	int retorno = -1;
 	int i;
-	int indice;
-	int indiceCensista;
+	int indiceTipo;
 
-		if(vivienda != NULL && limiteVivienda > 0 && tipoVivienda != NULL && limiteTipoVivienda > 0 && censista != NULL && limiteCensista > 0)
+		if(vivienda != NULL && limiteVivienda > 0 && tipoVivienda != NULL && limiteTipoVivienda > 0)
 		{
 			retorno = 0;
-				printf("ID\tCalle\t\t\t    Personas\t  Habitaciones\tVivienda   Censista\n");
+			printf("ID    Calle                   Personas Habitaciones Vivienda\n");
 				for(i=0;i<limiteVivienda;i++)
 				{
-					if( (vivienda+i)->isEmpty == 0 )
+					if( (*(vivienda+i)).isEmpty == 0 )
 					{
-						indice = buscarTipoVivienda( (vivienda+i)->tipoVivienda, tipoVivienda, limiteTipoVivienda );
-						indiceCensista = buscarCensista( (vivienda+i)->legajoCensista, censista, limiteCensista );
-						printf("%d\t"
-								"%s\t\t\t"
-								"%d\t\t"
-								"%d\t"
-								"%s\t   "
-								"%s\n",
-						(vivienda+i)->idVivienda,
-						(vivienda+i)->calle,
-						(vivienda+i)->cantidadPersonas,
-						(vivienda+i)->cantidadHabitaciones,
-						(tipoVivienda+indice)->descripcion,
-						(censista+indiceCensista)->nombre );
+						indiceTipo = buscarTipoVivienda( (vivienda+i)->tipoVivienda, tipoVivienda, limiteTipoVivienda );
+
+						imprimirVivienda( (vivienda+i), (tipoVivienda+indiceTipo));
 					}
-
 				}
-
 		}
 
 	return retorno;
@@ -406,7 +312,7 @@ int imprimirVivienda(eVivienda* vivienda, int limiteVivienda, eTipoVivienda* tip
  * @param vivienda Puntero* de eVivienda
  * @param limite int
  * @param id int valor ingresado por el usuario
- * @return retorna -1 [Si los punteros llegaron en NULL] - retorna (-2) [Si no se encontro el ID] - retorna (La posicion del ID) si todoOk
+ * @return retorna -1 [Si alguno de los punteros llego en NULL] - retorna (-2) [Si no se encontro el ID] - retorna (La posicion del ID) si todoOk
  */
 int buscarId(eVivienda* vivienda, int limite, int id)
 {
@@ -438,7 +344,7 @@ int buscarId(eVivienda* vivienda, int limite, int id)
  * @param tipoVivienda Puntero* de eTipoVivienda
  * @param limiteTipoVivienda int
  * @param opcion int
- * @return retorna (-1) [Si los punteros llegaron en NULL] - retorna (1) [Si no se pudo guardar el dato modificado] - retorna (0) si todoOK
+ * @return retorna (-1) [Si alguno de los punteros llego en NULL] - retorna (1) [Si no se pudo guardar el dato modificado] - retorna (0) si todoOK
  */
 int modificarDatoVivienda(eVivienda* vivienda, int indice, eTipoVivienda* tipoVivienda, int limiteTipoVivienda, int opcion)
 {
@@ -528,11 +434,11 @@ int darDeBaja(eVivienda* vivienda, int indice)
 }
 
 /**
- * @brief Ordena el arrat de manera ascedente por calle o en caso de igualdad por Cantidad de Personas
+ * @brief Ordena el array de manera ascedente por calle o en caso de igualdad por Cantidad de Personas
  *
  * @param vivienda Puntero* eVivienda
  * @param limiteVivienda int
- * @return retorna (-1) [Si los punteros llegaron en NULL] - retorna (1) [Si no se pudo ordenar] - retorna (0) si todoOK
+ * @return retorna (-1) [Si alguno de los punteros llego en NULL] - retorna (1) [Si no se pudo ordenar] - retorna (0) si todoOK
  */
 int vivienda_ordenarCalle(eVivienda* vivienda, int limiteVivienda)
 {
@@ -602,21 +508,63 @@ int vivienda_ordenarCalle(eVivienda* vivienda, int limiteVivienda)
  * @param censista Puntero* de eCensista
  * @param limiteCensista int
  * @param ordenar funcion (funcionOrdenar)
- * @return retorna (-1) [Si los punteros llegaron en NULL] - retorna (0) si todoOk
+ * @return retorna (-1) [Si alguno de los punteros llego en NULL] - retorna (0) si todoOk
  */
-int ordenarViviendas(eVivienda* vivienda, int limiteVivienda, eTipoVivienda* tipoVivienda, int limiteTipoVivienda, eCensista* censista, int limiteCensista, funcionOrdenar ordenar)
+int ordenarViviendas(eVivienda* vivienda, int limiteVivienda, eTipoVivienda* tipoVivienda, int limiteTipoVivienda, funcionOrdenar ordenarVivienda)
 {
 	int retorno = -1;
 
-		if(vivienda != NULL && limiteVivienda > 0 && tipoVivienda != NULL && limiteTipoVivienda > 0 && censista != NULL && limiteCensista > 0 )
+		if(vivienda != NULL && limiteVivienda > 0 && tipoVivienda != NULL && limiteTipoVivienda > 0)
 		{
 			retorno = 0;
 
-			ordenar(vivienda, limiteVivienda);
-	 	 	imprimirVivienda(vivienda, limiteVivienda, tipoVivienda, limiteTipoVivienda, censista, limiteCensista);
+			ordenarVivienda(vivienda, limiteVivienda);
+			imprimirArrayVivienda(vivienda, limiteVivienda, tipoVivienda, limiteTipoVivienda);
 
 		}
 
 	return retorno;
 }
+
+/**
+ * @brief Hace un alta Forzosa de una vivienda
+ *
+ * @param vivienda Puntero* eVivienda
+ * @param indice int posicion que se le asigna
+ * @param id Puntero* int
+ * @param calle char
+ * @param cantidadPersonas int
+ * @param cantidadHabitaciones int
+ * @param tipoVivienda int
+ * @param legajoCensista int
+ * @return retorna (-1) [Si algunos de los punteros llego en NULL] - retorna (0) si todoOk
+ */
+int forzarAltaVivienda(eVivienda* vivienda, int indice, int* id, char* calle, int cantidadPersonas, int cantidadHabitaciones, int tipoVivienda, int legajoCensista)
+{
+	int retorno = -1;
+
+
+		if(vivienda != NULL && indice >= 0)
+		{
+			retorno = 0;
+
+
+				strcpy((vivienda+indice)->calle, calle);
+				(vivienda+indice)->cantidadPersonas = cantidadPersonas;
+				(vivienda+indice)->cantidadHabitaciones = cantidadHabitaciones;
+				(vivienda+indice)->tipoVivienda = tipoVivienda;
+				(vivienda+indice)->legajoCensista = legajoCensista;
+
+				(*id)++;
+				(vivienda+indice)->idVivienda = *id;
+				(vivienda+indice)->isEmpty = 0;
+
+
+
+		}
+
+	return retorno;
+}
+
+
 

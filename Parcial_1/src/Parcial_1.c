@@ -3,7 +3,9 @@
 #include <string.h>
 #include "Menu.h"
 #include "Vivienda.h"
-#include "Validaciones.h"
+#include "Censista.h"
+#include "utn_Validaciones.h"
+#include  "Listar.h"
 
 #define CANTIDAD_CENSISTA 3
 #define CANTIDAD_VIVIENDA 2000
@@ -17,22 +19,33 @@ int main(void) {
 	eTipoVivienda tipoVivienda[CANTIDAD_TIPO_VIVIENDA] = { {200, "Casa"}, {201, "Departamento"}, {202, "Casilla"}, {203, "Rancho"} };
 	eVivienda vivienda[CANTIDAD_VIVIENDA];
 
-	funcionOrdenar ordenarPorCalle;
+	funcionOrdenar ordenarVivienda;
 
 	int opcionMenuPrincipal;
 	int opcionMenuSecundario;
 	int contador = 20000;
+	int idDeVivienda;
 	int id;
+	int indice;
 	int indiceModificar;
 	int indiceBaja;
 	int bandera = 1;
 
+	int retornoAlta;
+	int retornoCensista;
 	int retornoIdModificar;
 	int retornoIdBaja;
 
-	ordenarPorCalle = vivienda_ordenarCalle;
+	ordenarVivienda = vivienda_ordenarCalle;
 
 		iniciarIsEmpty(vivienda, CANTIDAD_VIVIENDA);
+//funcion para forzar datos
+
+		forzarAltaVivienda(vivienda, 0, &contador, "Piedra buena 341", 4, 2, 202, 102);
+		forzarAltaVivienda(vivienda, 1, &contador, "Libres del sur 15", 8, 3, 200, 101);
+		forzarAltaVivienda(vivienda, 2, &contador, "Febrero 265", 2, 1, 200, 100);
+		forzarAltaVivienda(vivienda, 3, &contador, "Acevedo 112", 88, 55, 201, 102);
+		forzarAltaVivienda(vivienda, 4, &contador, "Zapiola 832", 9, 2, 203, 100);
 
 		do{
 
@@ -42,13 +55,36 @@ int main(void) {
 			 	 switch(opcionMenuPrincipal)
 			 	 {
 			 	 	 case 1:
-			 	 		 altaVivienda(vivienda, CANTIDAD_VIVIENDA, tipoVivienda, CANTIDAD_TIPO_VIVIENDA, censista, CANTIDAD_CENSISTA, &contador);
+		 	 		 	indice = buscarLibre(vivienda, CANTIDAD_VIVIENDA);
+			 	 		retornoAlta = altaVivienda(vivienda, indice, tipoVivienda, CANTIDAD_TIPO_VIVIENDA);
+
+			 	 		 	 if(retornoAlta == 0)
+			 	 		 	 {
+			 	 		 		imprimirArrayCensista(censista,CANTIDAD_CENSISTA);
+			 	 		 		retornoCensista = asignarCensista( vivienda, indice, censista, CANTIDAD_CENSISTA);
+
+			 	 		 			if(retornoCensista == 0)
+			 	 		 			{
+			 	 						asignarId(&idDeVivienda , &contador);
+
+			 	 						(*(vivienda+indice)).idVivienda = idDeVivienda;
+					 	 		 		(*(vivienda+indice)).isEmpty = 0;
+			 	 		 			}
+					 	 		 	 else
+					 	 		 	 {
+					 	 		 		 printf("ERROR. Los datos no fueron cargados correctamente\n");
+					 	 		 	 }
+			 	 		 	 }
+			 	 		 	 else
+			 	 		 	 {
+			 	 		 		 printf("ERROR. Los datos no fueron cargados correctamente\n");
+			 	 		 	 }
 			 	 	 break;
 
 			 	 	 case 2:
 			 	 		 if(bandera == 0)
 			 	 		 {
-			 	 			imprimirVivienda(vivienda, CANTIDAD_VIVIENDA, tipoVivienda, CANTIDAD_TIPO_VIVIENDA, censista, CANTIDAD_CENSISTA);
+			 	 			imprimirArrayVivienda(vivienda, CANTIDAD_VIVIENDA, tipoVivienda, CANTIDAD_TIPO_VIVIENDA);
 			 	 			retornoIdModificar = pedirNumeroEntero(&id, "Ingrese el ID de la Vivienda: ", "Error. ingrese lo que se le pide.\n", 20000, 22000, 2);
 
 								if(retornoIdModificar == 0)
@@ -92,7 +128,7 @@ int main(void) {
 			 	 	 case 3:
 			 	 		 if(bandera == 0)
 			 	 		 {
-			 	 			imprimirVivienda(vivienda, CANTIDAD_VIVIENDA, tipoVivienda, CANTIDAD_TIPO_VIVIENDA, censista, CANTIDAD_CENSISTA);
+			 	 			imprimirArrayVivienda(vivienda, CANTIDAD_VIVIENDA, tipoVivienda, CANTIDAD_TIPO_VIVIENDA);
 							retornoIdBaja = pedirNumeroEntero(&id, "Ingrese el ID de la Vivienda: ", "Error. ingrese lo que se le pide.\n", 20000, 22000, 2);
 
 								if(retornoIdBaja == 0)
@@ -110,13 +146,14 @@ int main(void) {
 			 	 	 case 4:
 			 	 		 if(bandera == 0)
 			 	 		 {
-			 	 			ordenarViviendas(vivienda, CANTIDAD_VIVIENDA, tipoVivienda, CANTIDAD_VIVIENDA, censista, CANTIDAD_CENSISTA, ordenarPorCalle);
+			 	 			ordenarViviendas(vivienda, CANTIDAD_VIVIENDA, tipoVivienda, CANTIDAD_VIVIENDA, ordenarVivienda);
+			 	 			//imprimirArrayLista(vivienda, CANTIDAD_VIVIENDA, tipoVivienda, CANTIDAD_VIVIENDA, censista, CANTIDAD_CENSISTA);
 			 	 		 }
 
 			 	 	break;
 
 			 	 	case 5:
-			 	 		imprimirCensista(censista, CANTIDAD_CENSISTA);
+			 	 		imprimirArrayCensista(censista,CANTIDAD_CENSISTA);
 			 	 	break;
 
 			 	 	 case 6:

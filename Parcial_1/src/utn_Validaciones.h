@@ -1,6 +1,6 @@
 
-#ifndef VALIDACIONES_H_
-#define VALIDACIONES_H_
+#ifndef UTN_VALIDACIONES_H_
+#define UTN_VALIDACIONES_H_
 
 int medirLongitud(char* cadena, int* longitud);
 int contadorDeId(int* contadorId);
@@ -15,4 +15,4 @@ int pedirNumeroEntero(int* numero, char* mensaje, char* mensajeError, int min, i
 int validarSoloLetras(char* cadena, int limite);
 int pedirNombreOapellido(char* cadena, int limite, char* mensaje, char* mensajeError, int intentos);
 
-#endif /* VALIDACIONES_H_ */
+#endif /* UTN_VALIDACIONES_H_ */

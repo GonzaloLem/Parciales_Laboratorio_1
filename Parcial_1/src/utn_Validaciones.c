@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "Validaciones.h"
+
+#include "utn_Validaciones.h"
 
 #define LIMITE_BUFFER 4096
 

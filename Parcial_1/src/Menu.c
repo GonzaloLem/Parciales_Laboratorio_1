@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "Menu.h"
-#include "Validaciones.h"
+#include "utn_Validaciones.h"
 
 void imprimirMenu()
 {
