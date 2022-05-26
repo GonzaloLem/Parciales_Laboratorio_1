@@ -1,3 +1,7 @@
+/*
+ * Nombre: Gonzalo
+ * Apellido: Lemiña
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -43,7 +47,7 @@ int main(void) {
 		//funcion para forzar datos
 		forzarAltaVivienda(vivienda, 0, &contador, "Piedra buena 341", 4, 2, 202, 102);
 		forzarAltaVivienda(vivienda, 1, &contador, "Libres del sur 17", 8, 3, 200, 101);
-		forzarAltaVivienda(vivienda, 2, &contador, "9 de Febrero 265", 2, 111, 200, 100);
+		forzarAltaVivienda(vivienda, 2, &contador, "9 de Febrero 265", 2, 111, 200, 102);
 		forzarAltaVivienda(vivienda, 3, &contador, "Acevedo 112", 88, 55, 201, 102);
 		forzarAltaVivienda(vivienda, 4, &contador, "Zapiola 832", 9, 2, 203, 100);
 
@@ -145,9 +149,8 @@ int main(void) {
 			 	 	 case 4:
 			 	 		 if(bandera == 0)
 			 	 		 {
-			 	 			 printf("%d\n", (*(vivienda+5)).isEmpty );
-			 	 			ordenarViviendas(vivienda, CANTIDAD_VIVIENDA, tipoVivienda, CANTIDAD_VIVIENDA, ordenarVivienda);
-			 	 			//imprimirArrayLista(vivienda, CANTIDAD_VIVIENDA, tipoVivienda, CANTIDAD_VIVIENDA, censista, CANTIDAD_CENSISTA);
+			 	 			ordenarViviendas(vivienda, CANTIDAD_VIVIENDA, tipoVivienda, CANTIDAD_TIPO_VIVIENDA, ordenarVivienda);
+			 	 			imprimirArrayLista(vivienda, CANTIDAD_VIVIENDA, tipoVivienda, CANTIDAD_VIVIENDA, censista, CANTIDAD_CENSISTA);
 			 	 		 }
 
 			 	 	break;
@@ -156,14 +159,21 @@ int main(void) {
 			 	 		imprimirArrayCensista(censista,CANTIDAD_CENSISTA);
 			 	 	break;
 
-			 	 	 case 6:
+			 	 	case 6:
+			 	 		imprimirArrayCensistaVivienda(censista, CANTIDAD_CENSISTA, vivienda, CANTIDAD_VIVIENDA, tipoVivienda, CANTIDAD_TIPO_VIVIENDA);
+			 	 	break;
+
+			 	 	case 7:
+			 	 		mejorCensista(censista, CANTIDAD_CENSISTA, vivienda, CANTIDAD_VIVIENDA);
+			 	 	break;
+			 	 	 case 8:
 			 	 		 printf("Cerrando programa\n");
 			 	 		 system("PAUSE");
 			 	  	 break;
 			 	 }
 
 
-		}while(opcionMenuPrincipal != 6);
+		}while(opcionMenuPrincipal != 8);
 
 
 	return EXIT_SUCCESS;

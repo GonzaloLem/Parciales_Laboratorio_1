@@ -11,7 +11,9 @@ void imprimirMenu()
 			"3)Baja Vivienda\n"
 			"4)Listar Viviendas\n"
 			"5)Listar Cencista\n"
-			"6)Salir\n"
+			"6)Listado de los censistas y viviendas censadas\n"
+			"7)Cenista con mas censos realizados\n"
+			"8)Salir\n"
 			"-Opcion: ");
 }
 

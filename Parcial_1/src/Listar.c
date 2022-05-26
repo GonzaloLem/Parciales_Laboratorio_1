@@ -29,7 +29,7 @@ int imprimirLista(eVivienda* vivienda, eTipoVivienda* tipoVivienda, eCensista* c
 					"      \t%d"
 					" \t%d"
 					"           %s"
-					"             %s\n",
+					"           %s\n",
 			vivienda->idVivienda,
 			vivienda->calle,
 			vivienda->cantidadPersonas,
@@ -121,3 +121,142 @@ int asignarCensista(eVivienda* vivienda, int indice, eCensista* censista, int li
 	return retorno;
 }
 
+int listar_buscarCensista(int legajoCensista, eVivienda* vivienda, int limite, eTipoVivienda* tipoVivienda, int limiteTipoVivienda)
+{
+	int retorno = -1;
+	int i;
+	int indiceTipo;
+
+		if(legajoCensista >= 0 && vivienda != NULL && limite > 0)
+		{
+			for(i=0;i<limite;i++)
+			{
+				if(legajoCensista == (*(vivienda+i)).legajoCensista && (*(vivienda+i)).isEmpty == 0 )
+				{
+					indiceTipo = buscarTipoVivienda( (*(vivienda+i)).tipoVivienda, tipoVivienda, limiteTipoVivienda );
+					imprimirVivienda( (vivienda+i) , (tipoVivienda+indiceTipo));
+				}
+			}
+		}
+
+	return retorno;
+}
+
+/**
+ * @brief imprime las viviendas censadas por un censista
+ *
+ * @param censista Puntero* eCensista
+ * @param limiteCensista int
+ * @param vivienda Puntero* eVivienda
+ * @param limitevivienda int
+ * @param tipoVivienda Puntero* eTipoVivienda
+ * @param limiteTipovivienda int
+ * @return retorna (-1) [Si alguno de los punteros llego en NULL] - retorna (0) todoOk
+ */
+int imprimirArrayCensistaVivienda(eCensista* censista, int limiteCensista, eVivienda* vivienda, int limitevivienda, eTipoVivienda* tipoVivienda, int limiteTipovivienda)
+{
+	int retorno = -1;
+	int i;
+
+		if(censista != NULL && limiteCensista > 0 && vivienda != NULL && limitevivienda > 0 && tipoVivienda > 0 && limiteTipovivienda > 0)
+		{
+			retorno = 0;
+
+				for(i=0;i<limiteCensista;i++)
+				{
+					imprimirCensista( (censista+i) );
+
+					listar_buscarCensista( (*(censista+i)).legajoCensista, vivienda, limitevivienda, tipoVivienda, limiteTipovivienda );
+
+
+				}
+
+		}
+
+	return retorno;
+}
+
+/*
+int comprarLegajos(int legajoCensista, eCensista* censista, int limite)
+{
+	int retorno = -1;
+	int i;
+
+		if(legajoCensista >= 0 && censista != NULL && limite > 0)
+		{
+			retorno = -2;
+
+			for(i=0;i<limite;i++)
+			{
+				if(legajoCensista == (*(censista+i)).legajoCensista )
+				{
+					retorno = i;
+					break;
+				}
+			}
+		}
+
+	return retorno;
+}*/
+
+int mejorCensista(eCensista* censista, int limiteCensista,eVivienda*  vivienda, int limiteVivienda)
+{
+	int retorno = -1;
+	int i;
+	int censis;
+	int contadorAna = 0;
+	int contadorJuan = 0;
+	int contadorSol = 0;
+
+		if(censista != NULL && limiteCensista > 0 && vivienda != NULL && limiteVivienda > 0)
+		{
+			retorno = 0;
+
+				for(i=0;i<limiteVivienda;i++)
+				{
+					if( (*(vivienda+i)).isEmpty == 0 )
+					{
+						censis = buscarCensista( (*(vivienda+i)).legajoCensista , censista, limiteCensista);
+							switch(censis)
+							{
+								case 0:
+									contadorAna++;
+								break;
+
+								case 1:
+									contadorJuan++;
+								break;
+
+								case 2:
+									contadorSol++;
+								break;
+							}
+
+					}
+				}
+
+				if(contadorAna > contadorJuan && contadorAna > contadorSol)
+				{
+					printf("La censista ana es la que mas censos realizo\n");
+				}
+				else
+				{
+					if(contadorJuan > contadorAna && contadorJuan > contadorSol)
+					{
+						printf("El censista Juan es el que mas censos realizo\n");
+					}
+					else
+					{
+						if(contadorSol > contadorAna && contadorSol > contadorJuan)
+						{
+							printf("La censista Sol es el que mas censos realizo\n");
+						}
+					}
+				}
+
+
+
+		}
+
+	return retorno;
+}

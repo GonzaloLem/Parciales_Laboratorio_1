@@ -517,7 +517,7 @@ int ordenarViviendas(eVivienda* vivienda, int limiteVivienda, eTipoVivienda* tip
 			retorno = 0;
 
 			ordenarVivienda(vivienda, limiteVivienda);
-			imprimirArrayVivienda(vivienda, limiteVivienda, tipoVivienda, limiteTipoVivienda);
+			//imprimirArrayVivienda(vivienda, limiteVivienda, tipoVivienda, limiteTipoVivienda);
 
 		}
 
