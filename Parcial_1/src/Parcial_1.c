@@ -39,11 +39,11 @@ int main(void) {
 	ordenarVivienda = vivienda_ordenarCalle;
 
 		iniciarIsEmpty(vivienda, CANTIDAD_VIVIENDA);
-//funcion para forzar datos
 
+		//funcion para forzar datos
 		forzarAltaVivienda(vivienda, 0, &contador, "Piedra buena 341", 4, 2, 202, 102);
-		forzarAltaVivienda(vivienda, 1, &contador, "Libres del sur 15", 8, 3, 200, 101);
-		forzarAltaVivienda(vivienda, 2, &contador, "Febrero 265", 2, 1, 200, 100);
+		forzarAltaVivienda(vivienda, 1, &contador, "Libres del sur 17", 8, 3, 200, 101);
+		forzarAltaVivienda(vivienda, 2, &contador, "9 de Febrero 265", 2, 111, 200, 100);
 		forzarAltaVivienda(vivienda, 3, &contador, "Acevedo 112", 88, 55, 201, 102);
 		forzarAltaVivienda(vivienda, 4, &contador, "Zapiola 832", 9, 2, 203, 100);
 
@@ -77,7 +77,7 @@ int main(void) {
 			 	 		 	 }
 			 	 		 	 else
 			 	 		 	 {
-			 	 		 		 printf("ERROR. Los datos no fueron cargados correctamente\n");
+			 	 		 		 printf("ERROR ALTA. Los datos no fueron cargados correctamente\n");
 			 	 		 	 }
 			 	 	 break;
 
@@ -146,6 +146,7 @@ int main(void) {
 			 	 	 case 4:
 			 	 		 if(bandera == 0)
 			 	 		 {
+			 	 			 printf("%d\n", (*(vivienda+5)).isEmpty );
 			 	 			ordenarViviendas(vivienda, CANTIDAD_VIVIENDA, tipoVivienda, CANTIDAD_VIVIENDA, ordenarVivienda);
 			 	 			//imprimirArrayLista(vivienda, CANTIDAD_VIVIENDA, tipoVivienda, CANTIDAD_VIVIENDA, censista, CANTIDAD_CENSISTA);
 			 	 		 }

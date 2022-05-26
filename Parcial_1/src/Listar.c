@@ -30,12 +30,12 @@ int imprimirLista(eVivienda* vivienda, eTipoVivienda* tipoVivienda, eCensista* c
 					" \t%d"
 					"           %s"
 					"             %s\n",
-			(vivienda)->idVivienda,
-			(vivienda)->calle,
-			(vivienda)->cantidadPersonas,
-			(vivienda)->cantidadHabitaciones,
-			(tipoVivienda)->descripcion,
-			(censista)->nombre );
+			vivienda->idVivienda,
+			vivienda->calle,
+			vivienda->cantidadPersonas,
+			vivienda->cantidadHabitaciones,
+			tipoVivienda->descripcion,
+			censista->nombre );
 		}
 
 	return retorno;
@@ -69,8 +69,8 @@ int imprimirArrayLista(eVivienda* vivienda, int limiteVivienda, eTipoVivienda* t
 					if( (*(vivienda+i)).isEmpty == 0 )
 					{
 
-						indiceTipo = buscarTipoVivienda( (vivienda+i)->tipoVivienda, tipoVivienda, limiteTipoVivienda );
-						indiceCensista = buscarCensista( (vivienda+i)->legajoCensista , censista, limiteCensista);
+						indiceTipo = buscarTipoVivienda( (*(vivienda+i)).tipoVivienda, tipoVivienda, limiteTipoVivienda );
+						indiceCensista = buscarCensista( (*(vivienda+i)).legajoCensista , censista, limiteCensista);
 
 						imprimirLista( (vivienda+i), (tipoVivienda+indiceTipo), (censista+indiceCensista) );
 					}
@@ -111,7 +111,7 @@ int asignarCensista(eVivienda* vivienda, int indice, eCensista* censista, int li
 					{
 						retorno = 0;
 
-						(vivienda+indice)->legajoCensista = legajoDelCensista;
+						(*(vivienda+indice)).legajoCensista = legajoDelCensista;
 					}
 				}
 

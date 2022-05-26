@@ -26,10 +26,10 @@ int imprimirCensista(eCensista* censista)
 						"%s\t"
 						"%d\t"
 						"%s\n",
-						(censista)->legajoCensista,
-						(censista)->nombre,
-						(censista)->edad,
-						(censista)->telefono );
+						censista->legajoCensista,
+						censista->nombre,
+						censista->edad,
+						censista->telefono );
 
 		}
 
@@ -85,13 +85,13 @@ int verificarCensista(eCensista* censista, int limite, char* nombre)
 
 				for(i=0;i<limite;i++)
 				{
-					strlwr((censista+i)->nombre);
+					strlwr( (*(censista+i)).nombre);
 
-					comparacion = strcmp( (censista+i)->nombre, nombre);
+					comparacion = strcmp( (*(censista+i)).nombre, nombre);
 
 					if(comparacion == 0)
 					{
-						retorno = (censista+i)->legajoCensista;
+						retorno = (*(censista+i)).legajoCensista;
 						break;
 					}
 				}
@@ -120,7 +120,7 @@ int buscarCensista(int legajo, eCensista* censista, int limite)
 
 				for(i=0;i<limite;i++)
 				{
-					if(legajo == (censista+i)->legajoCensista )
+					if(legajo == (*(censista+i)).legajoCensista )
 					{
 						retorno = i;
 						break;

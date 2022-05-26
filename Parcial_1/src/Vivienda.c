@@ -24,7 +24,7 @@ int iniciarIsEmpty(eVivienda* vivienda, int limite)
 
 				for(i=0;i<limite;i++)
 				{
-					(vivienda+i)->isEmpty = 1;
+					(*(vivienda+i)).isEmpty = 1;
 				}
 
 		}
@@ -50,7 +50,7 @@ int buscarLibre(eVivienda* vivienda, int limiteVivienda)
 
 			for(i=0;i<limiteVivienda;i++)
 			{
-				if( (vivienda+i)->isEmpty == 1 )
+				if( (*(vivienda+i)).isEmpty == 1 )
 				{
 					retorno = i;
 					break;
@@ -79,7 +79,7 @@ int buscarViviendaCargada(eVivienda* vivienda, int limiteVivienda)
 
 			for(i=0;i<limiteVivienda;i++)
 			{
-				if( (vivienda+i)->isEmpty == 0 )
+				if( (*(vivienda+i)).isEmpty == 0 )
 				{
 					retorno = 0;
 					break;
@@ -103,20 +103,18 @@ int verificarVivienda(eTipoVivienda* tipoVivienda, int limiteVivienda, int opcio
 {
 	int retorno = -1;
 	int i;
-	int nuevoLimite;
 
 		if(tipoVivienda != NULL && limiteVivienda > 0 && opcionVivienda > 0 && guardarId != NULL)
 		{
 			retorno = 1;
 
-				nuevoLimite = limiteVivienda+1;
-
-				for(i=0;i<nuevoLimite;i++)
+				opcionVivienda = opcionVivienda -1;
+				for(i=0;i<limiteVivienda;i++)
 				{
 					if(opcionVivienda == i)
 					{
 						retorno = 0;
-						(*guardarId) = (tipoVivienda+i-1)->idTipoVivienda;
+						(*guardarId) = (*(tipoVivienda+i)).idTipoVivienda;
 						break;
 					}
 				}
@@ -184,11 +182,11 @@ int altaVivienda(eVivienda* vivienda, int indice, eTipoVivienda* tipoVivienda, i
 		{
 			retorno = 1;
 
-
 			retornoCalle = pedirNumeroAlfanumerico(aux.calle, LIMITE_ALFANUMERICO, "Ingrese la calle: ", "Error. Ingrese bien los datos.\n", 2);
 			retornoPersonas = pedirNumeroEntero(&aux.cantidadPersonas, "Ingrese la cantidad de Personas: ", "Error. ingrese lo que se le pide.\n", 1, 1000, 2);
 			retornoHabitaciones = pedirNumeroEntero(&aux.cantidadHabitaciones, "Ingrese la cantidad de Habitaciones: ", "Error. ingrese lo que se le pide.\n", 1, 1000, 2);
 			retornoVivienda = pedirNumeroEntero(&opcionVivienda, "Ingrese el tipo de vivienda\n1)Casa\n2)Departamento\n3)Casilla\n4)Rancho\n-Opcion: ", "Error. ingrese lo que se le pide.\n", 1, 4, 2);
+
 			retornoVerificarVivienda = verificarVivienda(tipoVivienda, limiteTipoVivienda, opcionVivienda, &aux.tipoVivienda);
 
 				if(retornoCalle == 0 && retornoPersonas == 0 && retornoHabitaciones == 0 && retornoVivienda == 0 && retornoVerificarVivienda == 0 /*&& legajoDelCensista != -1 && legajoDelCensista != -2*/)
@@ -229,7 +227,7 @@ int buscarTipoVivienda(int idTipoVivienda, eTipoVivienda* tipoVivienda, int limi
 
 				for(i=0;i<limite;i++)
 				{
-					if(idTipoVivienda == (tipoVivienda+i)->idTipoVivienda )
+					if(idTipoVivienda == (*(tipoVivienda+i)).idTipoVivienda )
 					{
 						retorno = i;
 						break;
@@ -253,7 +251,7 @@ int imprimirVivienda(eVivienda* vivienda, eTipoVivienda* tipoVivienda)
 {
 	int retorno = -1;
 
-		if(vivienda != NULL && tipoVivienda != NULL )
+		if(vivienda != NULL && tipoVivienda != NULL)
 		{
 			retorno = 0;
 
@@ -262,11 +260,11 @@ int imprimirVivienda(eVivienda* vivienda, eTipoVivienda* tipoVivienda)
 					"      \t%d"
 					" \t%d"
 					"           %s\n",
-			(vivienda)->idVivienda,
-			(vivienda)->calle,
-			(vivienda)->cantidadPersonas,
-			(vivienda)->cantidadHabitaciones,
-			(tipoVivienda)->descripcion );
+			vivienda->idVivienda,
+			vivienda->calle,
+			vivienda->cantidadPersonas,
+			vivienda->cantidadHabitaciones,
+			tipoVivienda->descripcion );
 
 		}
 
@@ -294,12 +292,12 @@ int imprimirArrayVivienda(eVivienda* vivienda, int limiteVivienda, eTipoVivienda
 			printf("ID    Calle                   Personas Habitaciones Vivienda\n");
 				for(i=0;i<limiteVivienda;i++)
 				{
-					if( (*(vivienda+i)).isEmpty == 0 )
-					{
-						indiceTipo = buscarTipoVivienda( (vivienda+i)->tipoVivienda, tipoVivienda, limiteTipoVivienda );
+						if( (*(vivienda+i)).isEmpty == 0 )
+						{
+							indiceTipo = buscarTipoVivienda( (*(vivienda+i)).tipoVivienda, tipoVivienda, limiteTipoVivienda );
+							imprimirVivienda( (vivienda+i), (tipoVivienda+indiceTipo));
+						}
 
-						imprimirVivienda( (vivienda+i), (tipoVivienda+indiceTipo));
-					}
 				}
 		}
 
@@ -325,7 +323,7 @@ int buscarId(eVivienda* vivienda, int limite, int id)
 
 			for(i=0;i<limite;i++)
 			{
-				if(id == (vivienda+i)->idVivienda && (vivienda+i)->isEmpty == 0 )
+				if(id == (*(vivienda+i)).idVivienda && (*(vivienda+i)).isEmpty == 0 )
 				{
 					retorno = i;
 					break;
@@ -371,7 +369,7 @@ int modificarDatoVivienda(eVivienda* vivienda, int indice, eTipoVivienda* tipoVi
 							if(retornoCalle == 0)
 							{
 								retorno = 0;
-								strcpy( (vivienda+indice)->calle,aux.calle );
+								strcpy( (*(vivienda+indice)).calle, aux.calle );
 							}
 
 					break;
@@ -382,7 +380,7 @@ int modificarDatoVivienda(eVivienda* vivienda, int indice, eTipoVivienda* tipoVi
 							if(retornoPersonas == 0)
 							{
 								retorno = 0;
-								(vivienda+indice)->cantidadPersonas = aux.cantidadPersonas;
+								(*(vivienda+indice)).cantidadPersonas = aux.cantidadPersonas;
 							}
 					break;
 
@@ -392,7 +390,7 @@ int modificarDatoVivienda(eVivienda* vivienda, int indice, eTipoVivienda* tipoVi
 							if(retornoHabitaciones == 0)
 							{
 								retorno = 0;
-								(vivienda+indice)->cantidadHabitaciones = aux.cantidadHabitaciones;
+								(*(vivienda+indice)).cantidadHabitaciones = aux.cantidadHabitaciones;
 							}
 					break;
 
@@ -403,7 +401,7 @@ int modificarDatoVivienda(eVivienda* vivienda, int indice, eTipoVivienda* tipoVi
 							if(retornoVivienda == 0 && retornoVerificarVivienda == 0)
 							{
 								retorno = 0;
-								(vivienda+indice)->tipoVivienda = aux.tipoVivienda;
+								(*(vivienda+indice)).tipoVivienda = aux.tipoVivienda;
 							}
 					break;
 				}
@@ -427,7 +425,7 @@ int darDeBaja(eVivienda* vivienda, int indice)
 		{
 			retorno = 0;
 
-			(vivienda+indice)->isEmpty = 1;
+			(*(vivienda+indice)).isEmpty = 1;
 		}
 
 	return retorno;
@@ -460,9 +458,9 @@ int vivienda_ordenarCalle(eVivienda* vivienda, int limiteVivienda)
 	 			swap = 0;
 	 	 		for(i=0;i<nuevoLimite;i++)
 	 	 		{
-	 	 			comparacion = strcmp( (vivienda+i)->calle, (vivienda+i+1)->calle);
+	 	 			comparacion = strcmp( (*(vivienda+i)).calle, (*(vivienda+i+1)).calle);
 
-	 	 			if( (vivienda+i)->isEmpty == 0)
+	 	 			if( (*(vivienda+i)).isEmpty == 0)
 	 	 			{
 	 	 				if(comparacion > 0)
 	 	 				{
@@ -476,7 +474,7 @@ int vivienda_ordenarCalle(eVivienda* vivienda, int limiteVivienda)
 	 	 				{
 	 	 					if(comparacion == 0)
 	 	 					{
-	 	 						if( (vivienda+i)->cantidadPersonas > (vivienda+i+1)->cantidadPersonas )
+	 	 						if( (*(vivienda+i)).cantidadPersonas > (*(vivienda+i+1)).cantidadPersonas )
 	 	 						{
 	 	 	 	 					swap = 1;
 
@@ -549,15 +547,15 @@ int forzarAltaVivienda(eVivienda* vivienda, int indice, int* id, char* calle, in
 			retorno = 0;
 
 
-				strcpy((vivienda+indice)->calle, calle);
-				(vivienda+indice)->cantidadPersonas = cantidadPersonas;
-				(vivienda+indice)->cantidadHabitaciones = cantidadHabitaciones;
-				(vivienda+indice)->tipoVivienda = tipoVivienda;
-				(vivienda+indice)->legajoCensista = legajoCensista;
+				strcpy( (*(vivienda+indice)).calle, calle);
+				(*(vivienda+indice)).cantidadPersonas = cantidadPersonas;
+				(*(vivienda+indice)).cantidadHabitaciones = cantidadHabitaciones;
+				(*(vivienda+indice)).tipoVivienda = tipoVivienda;
+				(*(vivienda+indice)).legajoCensista = legajoCensista;
 
 				(*id)++;
-				(vivienda+indice)->idVivienda = *id;
-				(vivienda+indice)->isEmpty = 0;
+				(*(vivienda+indice)).idVivienda = *id;
+				(*(vivienda+indice)).isEmpty = 0;
 
 
 
