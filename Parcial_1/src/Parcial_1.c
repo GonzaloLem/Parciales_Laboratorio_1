@@ -62,7 +62,6 @@ int main(void) {
 			 	 		 	 {
 			 	 		 		imprimirArrayCensista(censista,CANTIDAD_CENSISTA);
 			 	 		 		retornoCensista = asignarCensista( vivienda, indice, censista, CANTIDAD_CENSISTA);
-
 			 	 		 			if(retornoCensista == 0)
 			 	 		 			{
 			 	 						asignarId(&idDeVivienda , &contador);
@@ -72,12 +71,12 @@ int main(void) {
 			 	 		 			}
 					 	 		 	 else
 					 	 		 	 {
-					 	 		 		 printf("ERROR. Los datos no fueron cargados correctamente\n");
+					 	 		 		 printf("ERROR en el Censista. Los datos no fueron cargados correctamente\n");
 					 	 		 	 }
 			 	 		 	 }
 			 	 		 	 else
 			 	 		 	 {
-			 	 		 		 printf("ERROR ALTA. Los datos no fueron cargados correctamente\n");
+			 	 		 		 printf("ERROR en el Alta. Los datos no fueron cargados correctamente\n");
 			 	 		 	 }
 			 	 	 break;
 

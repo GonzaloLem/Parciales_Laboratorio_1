@@ -105,14 +105,14 @@ int asignarCensista(eVivienda* vivienda, int indice, eCensista* censista, int li
 
 				if(retornoNombre == 0)
 				{
-					legajoDelCensista = verificarCensista(censista, LIMITE_CARACTER_LISTAR, buffer);
-
+					legajoDelCensista = verificarCensista(censista, limiteCensista, buffer);
 					if(legajoDelCensista != -1 && legajoDelCensista != -2)
 					{
 						retorno = 0;
 
 						(*(vivienda+indice)).legajoCensista = legajoDelCensista;
 					}
+
 				}
 
 

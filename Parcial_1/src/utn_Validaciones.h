@@ -5,7 +5,7 @@
 int medirLongitud(char* cadena, int* longitud);
 int contadorDeId(int* contadorId);
 
-int validarLongitud(char* cadena, int limite);
+int validarLongitud(char* cadena, int limite, int minimo);
 int validarSololetrasNumeros(char* cadena, int limite);
 int pedirNumeroAlfanumerico(char* alfaNumerico, int len, char* mensaje, char*mensajeError, int intentos);
 

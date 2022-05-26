@@ -85,7 +85,7 @@ int validarSoloNumerosEnteros(char* buffer, int longitud)
  * @param limite int
  * @return retorna (-1) [Si los punteros llegaron en NULL] - retorna (1) [Si la cadena supera el limete] -retorna (0) si todoOk
  */
-int validarLongitud(char* cadena, int limite)
+int validarLongitud(char* cadena, int limite, int minimo)
 {
 	int retorno = -1;
 	int longitud;
@@ -96,7 +96,7 @@ int validarLongitud(char* cadena, int limite)
 
 				longitud = strlen(cadena);
 
-				if(longitud < limite)
+				if(longitud < limite && longitud >= minimo)
 				{
 					retorno = 0;
 				}
@@ -200,7 +200,7 @@ int pedirNumeroAlfanumerico(char* alfaNumerico, int limite, char* mensaje, char*
 
 					medirLongitud(buffer, &longitud);
 
-					reportarLongitud = validarLongitud(buffer, limite);
+					reportarLongitud = validarLongitud(buffer, limite, 3);
 					reportarLetrasNumeros = validarSololetrasNumeros(buffer, longitud);
 
 						if(reportarLongitud == 0 && reportarLetrasNumeros == 0 )
@@ -311,7 +311,7 @@ int pedirNombreOapellido(char* cadena, int limite, char* mensaje, char* mensajeE
 
 						medirLongitud(buffer, &longitud);
 
-						retornolongitud = validarLongitud(buffer, limite);
+						retornolongitud = validarLongitud(buffer, limite, 3);
 						retornoLetras = validarSoloLetras(buffer, longitud);
 
 						if(retornoLetras == 0 && retornolongitud == 0)
@@ -322,7 +322,7 @@ int pedirNombreOapellido(char* cadena, int limite, char* mensaje, char* mensajeE
 						}
 						else
 						{
-							printf("%s\n", mensaje);
+							printf("%s\n", mensajeError);
 						}
 			}
 

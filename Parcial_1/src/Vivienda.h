@@ -18,7 +18,7 @@ typedef struct{
 	int tipoVivienda;
 	int isEmpty;
 
-	int idTipoVivienda;
+	//int idTipoVivienda;
 	int legajoCensista;
 
 }eVivienda;

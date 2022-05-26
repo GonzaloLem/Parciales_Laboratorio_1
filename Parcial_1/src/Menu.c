@@ -21,7 +21,7 @@ void imprimirMenuSecundario()
 			"2)Modificar la cantidad de Personas\n"
 			"3)Modificar la cantidad de Habitaciones\n"
 			"4)Modificar el tipo de Vivienda\n"
-			"5)Salir\n"
+			"5)Regresar\n"
 			"-Opcion: ");
 }
 
